@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <head>
+            <meta charset="UTF-8" />
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0"
+            />
+            <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+            <title>Home</title>
+            <link
+                rel="stylesheet"
+                href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+                crossorigin="anonymous"
+            />
+            <link
+                href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                rel="stylesheet"
+            />
+            <link
+                href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+                rel="stylesheet"
+                integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+                crossorigin="anonymous"
+            />
+            <link
+                href="https://fonts.googleapis.com/css?family=ZCOOL+KuaiLe&display=swap"
+                rel="stylesheet"
+            />
+        </head>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .navbar {
+            border-bottom: 3px solid #2c4251;
+        }
+
+        .navbar-brand {
+            color: #080708;
+            font-family: "ZCOOL KuaiLe", cursive;
+            font-size: 1.5rem;
+        }
+
+        .navbar-toggler {
+            border: none;
+            outline: none;
+        }
+
+        .navbar-toggler-icon {
+            cursor: pointer;
+        }
+        .navbar-icon {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+        .nav-item {
+            color: #080708;
+            padding: 2px;
+        }
+
+        .log-btn m-2 {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+        .form-header {
+            font-size: 1.3em;
+            border-bottom: 1px solid lightgray;
+        }
+        .form-group {
+            margin-top: 2vw;
+        }
+        .header {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            margin-top: 5vw;
+            margin-bottom: 3vw;
+        }
+        input {
+            margin: 0 1vw 0 1vw;
+        }
+
+        .footer {
+            width: 100%;
+            border-top: 5px solid #2c4251;
+            background-color: #080708;
+            color: #f0eff4;
+            padding: 1vw;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+    <body>
+        <!--  1. Name
+            2. Username
+            3. Password/Recheck
+            4. Account Type
+            5. Deactivate
+                a. Password
+            6. Delete
+                a. Password
+            7. Block Users
+-->
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="home.html">FACEPALM</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarsExample05"
+                aria-controls="navbarsExample05"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample05">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#feed"
+                            ><span class="navbar-icon"
+                                ><i class="fa fa-heart"></i></span
+                            >Feed
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#search"
+                            ><span class="navbar-icon"
+                                ><i class="fa fa-search"></i></span
+                            >Search</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html"
+                            ><span class="navbar-icon"
+                                ><i class="fa fa-address-card"></i></span
+                            >Profile</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#post"
+                            ><span class="navbar-icon"
+                                ><i class="fa fa-plus"></i></span
+                            >Post</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#settings"
+                            ><span class="navbar-icon"
+                                ><i class="fa fa-cog"></i></span
+                            >Settings</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn m-2 btn-warning log-btn">
+                            Login
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="header">
+                <h1>Settings</h1>
+            </div>
+            <p class="form-header">Change Username</p>
+            <p>Current Username: </p>
+            <form action="#" method="POST" class="form-group form-inline">
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    class="form-control"
+                />
+                <button
+                    type="submit"
+                    name="change_username"
+                    class="btn m-2 btn-success"
+                >
+                    Change Username
+                </button>
+            </form>
+            <p class="form-header">Change Password</p>
+            <form action="#" method="POST" class="form-group form-inline">
+                <input
+                    type="password"
+                    name="oldpwd"
+                    placeholder="Old password"
+                    class="form-control"
+                />
+                <input
+                    type="password"
+                    name="newpwd"
+                    placeholder="new password"
+                    class="form-control"
+                />
+                <input
+                    type="password"
+                    name="newpwd1"
+                    placeholder=" Re- enter Password"
+                    class="form-control"
+                />
+                <button
+                    type="submit"
+                    name="change_password"
+                    class="btn m-2 btn-success"
+                >
+                    Change Password
+                </button>
+            </form>
+            <!--
+            <p>Current Account Type: Account type</p>
+            <p class="form-header">Change Account Type</p>
+
+            <form action="#" method="POST" class="form-group form-inline">
+                <select
+                    placehoder="Account type"
+                    name="account-type"
+                    class="form-control"
+                >
+                    <option
+                        chan=""
+                        class="form-control"
+                        disabled
+                        selected
+                        hidden
+                        >Account type
+                    </option>
+                    <option class="form-control" value="Personal"
+                        >Personal
+                    </option>
+                    <option class="form-control" value="Business"
+                        >Business</option
+                    >
+                </select>
+                
+                <input
+                    type="password"
+                    name="account-type-password"
+                    placeholder="password"
+                    class="form-control"
+                />
+                <input
+                    type="submit"
+                    value="change_account_type"
+                    class="btn m-2 btn-primary"
+                />
+                -->
+            </form>
+            <p class="form-header">Deactivate Account</p>
+            <form action="#" method="POST" class="form-group form-inline">
+                <input
+                    type="password"
+                    name="deactivate_password"
+                    placeholder="Password"
+                    class="form-control"
+                />
+                <button
+                    type="submit"
+                    name="deactivate_account"
+                    class="btn m-2 btn-success"
+                >Deactivate Account</button>
+                {% if password_error %}
+                <p>{{password_error}}</p>
+                {% endif %}
+            </form>
+            <p class="form-header">Delete Account</p>
+            <form action="#" method="POST" class="form-group form-inline">
+                <input
+                    type="password"
+                    name="delete_password"
+                    placeholder="Password"
+                    class="form-control"
+                />
+                <button
+                type="submit"
+                name="delete_account"
+                class="btn m-2 btn-success"
+                >Deactivate Account</button>
+            </form>
+        </div>
+        <footer class="footer">
+            <p>Copyright - Facepalm</p>
+        </footer>
+
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

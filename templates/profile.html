@@ -279,7 +279,7 @@
                         >
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#post"
+                        <a class="nav-link" href="post.html"
                             ><i class="material-icons">add_circle</i>Post</a
                         >
                     </li>
@@ -288,13 +288,37 @@
                             ><i class="material-icons">settings</i>Settings</a
                         >
                     </li>
+                    {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="login2.html" class="nav-link"
-                            ><button class="btn btn-warning log-btn">
-                                Login
-                            </button></a
-                        >
+                        <form action="{% url 'profile' %}" method="POST">
+                            {% csrf_token %}
+                            <a class="nav-link"
+                                ><button
+                                    type="submit"
+                                    name="logout"
+                                    class="btn btn-danger log-btn"
+                                >
+                                    Logout
+                                </button></a
+                            >
+                        </form>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <form action="{% url 'profile' %}" method="POST">
+                            {% csrf_token %}
+                            <a class="nav-link"
+                                ><button
+                                    type="submit"
+                                    name="login"
+                                    class="btn btn-danger log-btn"
+                                >
+                                    Login
+                                </button></a
+                            >
+                        </form>
+                    </li>
+                    {%endif%}
                 </ul>
             </div>
         </nav>
@@ -305,7 +329,7 @@
                     <div class="user-profile-header-image">
                         <br />
                         <img
-                            src="img.jpg"
+                            src="/{{ UserProfile.profile_picture.url }}"
                             alt="profile-picture"
                             class="user-profile-picture"
                             id="username-pp"
@@ -313,7 +337,7 @@
                     </div>
                     <div class="user-profile-header-label">
                         <label for="username-pp" class="user-profile-name">
-                            @This_is_my_username</label
+                            {{ User.username }}</label
                         >
                     </div>
                     <div class="user-profile-header-details">
@@ -342,7 +366,7 @@
                         <a href="#profile" class="post-profile">
                             <img
                                 class="post-user-profilepic m-2"
-                                src="img.jpg"
+                                src="{{ UserProfile.profile_picture.url }}"
                                 alt="profile_pic"
                                 id="profile_pic"
                             />
@@ -386,13 +410,13 @@
                         <a href="#profile" class="post-profile">
                             <img
                                 class="post-user-profilepic m-2"
-                                src="img.jpg"
+                                src="{{ UserProfile.profile_picture.url }}"
                                 alt="profile_pic"
                                 id="profile_pic"
                             />
                             <label class="post-username" for="profile_pic"
-                                >This_is_the_username</label
-                            >
+                                >{{ User.username }}
+                            </label>
                         </a>
                         <a class="post-like p-2" href="#liked">
                             <i class="material-icons">favorite_border</i>

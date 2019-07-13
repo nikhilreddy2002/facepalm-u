@@ -1,128 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>POST</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=ZCOOL+KuaiLe&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      outline: none;
+    }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Home</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
-</head>
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    outline: none;
-  }
+    .navbar {
+      border-bottom: 3px solid #2c4251;
+    }
 
-  .navbar {
-    border-bottom: 3px solid #2c4251;
-  }
+    .navbar-brand {
+      color: #080708;
+      font-family: "ZCOOL KuaiLe", cursive;
+      font-size: 1.5rem;
+    }
 
-  .navbar-brand {
-    color: #080708;
-    font-family: "ZCOOL KuaiLe", cursive;
-    font-size: 1.5rem;
-  }
+    .navbar-toggler {
+      border: none;
+      outline: none;
+    }
 
-  .navbar-toggler {
-    border: none;
-    outline: none;
-  }
+    .navbar-toggler-icon {
+      cursor: pointer;
+    }
 
-  .navbar-toggler-icon {
-    cursor: pointer;
-  }
+    .nav-item {
+      color: #080708;
+      padding: 2px;
+    }
 
-  .nav-item {
-    color: #080708;
-    padding: 2px;
-  }
+    .log-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
 
-  .log-btn {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-  }
+    .feed-wrapper {
+      margin-top: 5vw;
+    }
 
-  .feed-wrapper {
-    margin-top: 5vw;
-  }
+    .header {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 3vw;
+    }
+    .select {
+      color: #00664d;
+    }
+    .background {
+      background-color: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+    }
+    .textarea {
+      resize: none;
+    }
+  </style>
 
-  .header {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 3vw;
-  }
-</style>
+  <body class="background">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="home.html">FACEPALM</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarsExample05"
+        aria-controls="navbarsExample05"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="home.html">FACEPALM</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05"
-      aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <div class="collapse navbar-collapse" id="navbarsExample05">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="home.html"
+              ><i class="material-icons">favorite</i>Feed
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="search.html"
+              ><i class="material-icons ">whatshot</i>Search</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile.html"
+              ><i class="material-icons">face</i>Profile</a
+            >
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="post.html"
+              ><i class="material-icons ">add_circle</i>Post</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#settings"
+              ><i class="material-icons">settings</i>Settings</a
+            >
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-warning log-btn">Login</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <form action="#" class="input-group w-25   mx-left ">
+      {%csrf_token%}
+      <select class="form-control select" required>
+        <option value="private">PRIVATE</option>
+        <option value="public">PUBLIC</option>
+      </select>
+    </form>
+    <form action="#" class="input-group w-25   mx-left  ">
+      {%csrf_token%}
+      <select class="form-control select" required>
+        <option value="none">POST TOPIC</option>
+        <option value="music">MUSIC</option>
+        <option value="sc_tch">SCIENCE AND TECH</option>
+        <option value="sports">SPORTS</option>
+        <option value="business">BUSINESS </option>
+        <option value="crnt_affrs">CURRENT AFFAIRS</option>
+        <option value="life">LIFESTYLE</option>
+        <option value="gaming">GAMING</option>
+        <option value="literature">LITERATURE</option>
+        <option value="edu">EDUCATION</option>
+        <option value="nature">NATURE</option>
+      </select>
+    </form>
+    <form>
+      {%csrf_token%}
+      <div class="form-group row w-75 m-5 textarea">
+        <label for="cptn"></label>
+        <textarea
+          rows="10"
+          resize:none
+          cols="3"
+          id="cptn"
+          class="form-control"
+          placeholder="Type something here..."
+        ></textarea>
+        <input
+          type="file"
+          class="form-control-file"
+          name="pic_inp"
+          accept="image/*"
+        />
 
-    <div class="collapse navbar-collapse" id="navbarsExample05">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#feed"><i class="material-icons">favorite</i>Feed
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#search"><i class="material-icons">whatshot</i>Search</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="profile.html"><i class="material-icons">face</i>Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#post"><i class="material-icons">add_circle</i>Post</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#settings"><i class="material-icons">settings</i>Settings</a>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-warning log-btn">Login</button>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <form action="#">
-    POST TYPE :<select class="  form-control" required>
-      <option value="pvt">PRIVATE</option>
-      <option value="music">PUBLIC</option>
+        <input type="submit" name="pic_sub" />
+      </div>
+    </form>
+  </body>
+  <script>
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
+        reader.onload = function(e) {
+          $("#blah").attr("src", e.target.result);
+        };
 
-    </select>
-
-    POST TOPIC :<select class="form-control" required>
-      <option value="none">NONE</option>
-      <option value="music">MUSIC</option>
-      <option value="sc_tch">SCIENCE AND TECH</option>
-      <option value="sports">SPORTS</option>
-      <option value="business">BUSINESS </option>
-      <option value="crnt_affrs">CURRENT AFFAIRS</option>
-      <option value="life">LIFESTYLE</option>
-      <option value="gaming">GAMING</option>
-      <option value="literature">LITERATURE</option>
-      <option value="edu">EDUCATION</option>
-      <option value="nature">NATURE</option>
-    </select>
-
-    <div class="form-group row mx-auto">
-      <label for="cptn">CAPTION:</label>
-      <input type="textarea" id="cptn" class="form-control" />
-    </div>
-    <input type="file" name="pic_inp" accept="image/*">
-
-    <input type="submit" name="pic_sub">
-  </form>
-</body>
-
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  </script>
 </html>
+
+<!--https://codepen.io/mobifreaks/pen/LIbca-->
