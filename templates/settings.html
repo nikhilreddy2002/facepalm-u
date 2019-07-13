@@ -175,8 +175,9 @@
                 <h1>Settings</h1>
             </div>
             <p class="form-header">Change Username</p>
-            <p>Current Username: </p>
+            <p>{{ User.username }} </p>
             <form action="#" method="POST" class="form-group form-inline">
+                {% csrf_token %}
                 <input
                     type="text"
                     name="username"
@@ -193,6 +194,7 @@
             </form>
             <p class="form-header">Change Password</p>
             <form action="#" method="POST" class="form-group form-inline">
+                    {% csrf_token %}
                 <input
                     type="password"
                     name="oldpwd"
@@ -218,6 +220,9 @@
                 >
                     Change Password
                 </button>
+                {% if password_error %}
+                <p>{{password_error}}</p>
+                {% endif %}
             </form>
             <!--
             <p>Current Account Type: Account type</p>
@@ -260,6 +265,7 @@
             </form>
             <p class="form-header">Deactivate Account</p>
             <form action="#" method="POST" class="form-group form-inline">
+                    {% csrf_token %}
                 <input
                     type="password"
                     name="deactivate_password"
@@ -271,12 +277,10 @@
                     name="deactivate_account"
                     class="btn m-2 btn-success"
                 >Deactivate Account</button>
-                {% if password_error %}
-                <p>{{password_error}}</p>
-                {% endif %}
             </form>
             <p class="form-header">Delete Account</p>
             <form action="#" method="POST" class="form-group form-inline">
+                    {% csrf_token %}
                 <input
                     type="password"
                     name="delete_password"

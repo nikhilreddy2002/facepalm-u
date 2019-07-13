@@ -74,11 +74,12 @@ def Profile(request):
 
 
 def Settings(request):
+    user = request.user
+    user_id = user.id
+    user_object = User.objects.get(id=user_id)
     if request.method == 'POST':
         data = request.POST
-        user = request.user
-        user_id = user.id
-        user_object = User.objects.get(id=user_id)
+
         if 'change_username' in data.keys():
             new_username = data['username']
             user_object.username = new_username
@@ -98,7 +99,7 @@ def Settings(request):
                 return render(request, 'settings.html', {'password_error': 'Passwords dont match.'})
         if "deactivate_account" in data.keys():
             old_passworddeactiv = data['deactivate_password']
-            if user_object.password = old_passworddeactiv:
+            if user_object.password == old_passworddeactiv:
                 user_object.is_active = False
             else:
                 return render(request, 'settings.html', {'error': 'Old Password'})
@@ -107,3 +108,5 @@ def Settings(request):
             if user_object.password = old_passworddelete:
                 # delete acc
                 pass
+    else:
+        return render(request, 'settings.html', {'User': user_object})
