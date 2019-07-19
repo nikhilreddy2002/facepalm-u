@@ -1,3 +1,4 @@
+{% load static from staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -101,6 +102,7 @@
             width: 100%;
             font-size: 1em;
         }
+
         .user-profile-picture {
             border-radius: 50%;
             width: 20vw;
@@ -264,7 +266,7 @@
             <div class="collapse navbar-collapse" id="navbarsExample05">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="home.html"
+                        <a class="nav-link" href="#feed"
                             ><i class="material-icons">favorite</i>Feed
                         </a>
                     </li>
@@ -284,7 +286,7 @@
                         >
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#settings"
+                        <a class="nav-link" href="{% url 'settings' %}"
                             ><i class="material-icons">settings</i>Settings</a
                         >
                     </li>
@@ -329,7 +331,7 @@
                     <div class="user-profile-header-image">
                         <br />
                         <img
-                            src="/{{ UserProfile.profile_picture.url }}"
+                            src="{% static UserProfilePictureurl %}"
                             alt="profile-picture"
                             class="user-profile-picture"
                             id="username-pp"
@@ -366,7 +368,7 @@
                         <a href="#profile" class="post-profile">
                             <img
                                 class="post-user-profilepic m-2"
-                                src="{{ UserProfile.profile_picture.url }}"
+                                src="{% static UserProfilePictureurl %}"
                                 alt="profile_pic"
                                 id="profile_pic"
                             />

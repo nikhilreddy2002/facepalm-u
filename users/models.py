@@ -16,12 +16,23 @@ class UserProfile(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     contact = models.IntegerField(unique=True, blank=False)
     likes = models.IntegerField(default=0)
-    profile_picture = models.ImageField(
-        upload_to='images', default='default.png')
+
+    """profile_picture = models.ImageField(
+        upload_to='images', default='default.png')"""
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.user.username
+
+
+class UserProfilePicture(models.Model):
+    user = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name="username")
+    image = models.ImageField(
+        upload_to='static/profile-pictures/', default='static/default.png')
+
+    def __str__(self):
+        return self.user.user.username
 
 
 class Following(models.Model):
