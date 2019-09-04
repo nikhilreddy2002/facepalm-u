@@ -127,17 +127,14 @@
         </ul>
       </div>
     </nav>
-    <form action="#" class="input-group w-25   mx-left ">
+    <form action="#" method="POST" class="input-group row w-25 mx-left">
       {%csrf_token%}
-      <select class="form-control select" required>
+      <select class="form-control select col" required name="posttype">
         <option value="private">PRIVATE</option>
         <option value="public">PUBLIC</option>
       </select>
-    </form>
-    <form action="#" class="input-group w-25   mx-left  ">
-      {%csrf_token%}
-      <select class="form-control select" required>
-        <option value="none">POST TOPIC</option>
+      <select class="form-control select col" required name="posttopic">
+        <option value="none" hidden>POST TOPIC</option>
         <option value="music">MUSIC</option>
         <option value="sc_tch">SCIENCE AND TECH</option>
         <option value="sports">SPORTS</option>
@@ -149,27 +146,33 @@
         <option value="edu">EDUCATION</option>
         <option value="nature">NATURE</option>
       </select>
-    </form>
-    <form>
-      {%csrf_token%}
-      <div class="form-group row w-75 m-5 textarea">
-        <label for="cptn"></label>
+      <br />
+      <br />
+      <div class="col">
+        <label for="header">Header</label>
+        <input type="text" name="header" id="header" class="form-control" />
+      </div>
+      <div class="col">
+        <label for="link">Link</label>
+        <input type="text" name="link" id="link" class="form-control" />
+      </div>
+      <div class="form-group col w-75 m-5 textarea">
+        <label for="cptn">Caption</label>
         <textarea
           rows="10"
-          resize:none
           cols="3"
           id="cptn"
+          name="text"
           class="form-control"
           placeholder="Type something here..."
         ></textarea>
-        <input
+        <!--<input
           type="file"
           class="form-control-file"
           name="pic_inp"
           accept="image/*"
-        />
-
-        <input type="submit" name="pic_sub" />
+        />-->
+        <button type="submit">POST</button>
       </div>
     </form>
   </body>

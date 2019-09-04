@@ -121,7 +121,7 @@ def Settings(request):
                     new_password_hashed = make_password(new_password)
                     user_object.password = new_password_hashed
                     user_object.save()
-                    return
+                    return render(request, 'settings.html', {'password_error': 'Current password entered is wrong.'})
                 else:
                     return render(request, 'settings.html', {'password_error': 'Current password entered is wrong.'})
             else:
