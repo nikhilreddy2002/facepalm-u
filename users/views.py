@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from . import models as u_models
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
@@ -20,9 +20,17 @@ def Login(request):
             print(user)
             if user is not None:
                 login(request, user)
-
                 # Redirect to a success page.
-                return redirect('profile')
+                user = request.user
+                user_id = user.id
+                user_object = User.objects.get(id=user_id)
+                user_profile = u_models.UserProfile.objects.get(user=user)
+                if user_object.is_active == False:
+                    user_object.is_active = True
+                    user_object.save()
+                    return render(request, 'profile.html', {'data': 'Account has been reactivated'})
+                else:
+                    return redirect('profile')
             else:
 
                 return redirect('login')
@@ -88,6 +96,7 @@ def Settings(request):
     user = request.user
     user_id = user.id
     user_object = User.objects.get(id=user_id)
+    print(user_object.password)
     user_profile = u_models.UserProfile.objects.get(user=user)
     if request.method == 'POST':
         data = request.POST
@@ -112,26 +121,34 @@ def Settings(request):
             user_profile_picture.save()
 
             return redirect('settings')
+
         if 'change_password' in data.keys():
             new_password = data['newpwd']
             new_password1 = data['newpwd1']
             if new_password == new_password1:
                 old_password = data['oldpwd']
-                if user_object.password == old_password:
+                # print(new_password, new_password1, old_password)
+                if check_password(old_password, user_object.password):
                     new_password_hashed = make_password(new_password)
                     user_object.password = new_password_hashed
                     user_object.save()
+<<<<<<< HEAD
+                    return redirect('login')
+=======
                     return render(request, 'settings.html', {'password_error': 'Current password entered is wrong.'})
+>>>>>>> c13ec540f0aeaf6cb5aa486749cbc66f7eb2dd5f
                 else:
                     return render(request, 'settings.html', {'password_error': 'Current password entered is wrong.'})
             else:
                 return render(request, 'settings.html', {'password_error': 'Passwords dont match.'})
         if "deactivate_account" in data.keys():
             old_passworddeactiv = data['deactivate_password']
-            if user_object.password == old_passworddeactiv:
+            if check_password(old_password, user_object.password):
                 user_object.is_active = False
+                user_object.save()
+                return redirect('login')
             else:
-                return render(request, 'settings.html', {'error': 'Old Password'})
+                return render(request, 'settings.html', {'password_error': 'Current password entered is wrong.'})
         if "delete_account" in data.keys():
             old_passworddelete = data['delete_password']
             if user_object.password == old_passworddelete:
