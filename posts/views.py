@@ -15,6 +15,7 @@ def Post(request):
         user_id = user.id
         user_object = User.objects.get(id=user_id)
         user_profile = u_models.UserProfile.objects.get(user=user)
+        user_profile_picture = u_models.UserProfilePicture(user=user)
         data = request.POST
         posttype = data['posttype']
         posttopic = data['posttopic']
@@ -23,7 +24,7 @@ def Post(request):
         link = data['link']
         #image = data['image']
         new_post = p_models.Post(user=user, header=header, text=text,
-                                 link=link, post_type=posttype, post_topic=posttopic)
+                                 profilepicture=user_profile_picture, link=link, post_type=posttype, post_topic=posttopic)
         new_post.save()
         return redirect('feed')
 

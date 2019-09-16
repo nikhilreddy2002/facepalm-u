@@ -148,7 +148,8 @@
   }
 </style>
 
-{% block content %} {% for post in posts %}
+{% block content %} 
+{% for post in posts %}
 <div class="feed-wrapper container-fluid">
   <div class="feed">
     <div class="header">
@@ -161,7 +162,7 @@
           <a href="#profile" class="post-profile">
             <img
               class="post-user-profilepic m-2"
-              src="{{ post.user }}"
+              src={{ post.profilepicture.url }}
               alt="profile_pic"
               id="profile_pic"
             />
@@ -169,12 +170,12 @@
               post.user.name
             }}</label>
           </a>
-          <a class="post-like p-2" href="#liked">
+          <!--<a class="post-like p-2" href="#liked">
             <i class="material-icons">favorite_border</i>
           </a>
           <a class="post-comment p-2" href="#commented">
             <i class="material-icons">chat_bubble_outline</i>
-          </a>
+          </a>-->
         </div>
         <div class="post-body">
           <p class="post-body-heading">
@@ -182,6 +183,9 @@
           </p>
           <p class="post-body-text">
             {{ post.text }}
+          </p>
+          <p class="post-body-link">
+            <a href={{post.link}}
           </p>
           <p class="post-body-date">
             {{ post.timestamp }}
@@ -191,4 +195,5 @@
     </div>
   </div>
 </div>
-{% endfor %} {% endblock content %}
+{% endfor %} 
+{% endblock content %}
