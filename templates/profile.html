@@ -1,4 +1,5 @@
 {% load static from staticfiles %}
+{% load from_index %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -76,6 +77,11 @@
         }
 
         .user-profile-header-label {
+            display: flex;
+            justify-content: center;
+        }
+
+        .user-profile-header-follow {
             display: flex;
             justify-content: center;
             border-bottom: 3px solid rgba(255, 255, 255, 0.6);
@@ -342,6 +348,41 @@
                             {{ User.username }}</label
                         >
                     </div>
+                    <div class="user-profile-header-follow pb-3">
+                        <!-- if the user already follows the other user - unfollow btn is shown -->
+                        {% if following %}
+                        <form action="#" method="POST">
+                            {% csrf_token %}
+                            <a
+                                data-toggle="tooltip"
+                                title="UnPalm Me"
+                                name="unfollow"
+                            >
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="material-icons">
+                                        pan_tool
+                                    </i>
+                                </button>
+                            </a>
+                        </form>
+                        {% else %}
+                        <form action="#" method="POST">
+                            {% csrf_token %}
+                            <a
+                                data-toggle="tooltip"
+                                title="Palm Me"
+                                name="follow"
+                            >
+                                <button type="submit" class="btn btn-info">
+                                    <i class="material-icons">
+                                        pan_tool
+                                    </i>
+                                </button>
+                            </a>
+                        </form>
+                        {% endif %}
+                    </div>
+
                     <div class="user-profile-header-details">
                         <p class="user-profile-header-details-heads">
                             Followers
@@ -360,144 +401,49 @@
                 </div>
             </div>
             <div class="post-wrapper container-fluid">
-                <div class="posts-heading-wrapper">
-                    <p class="posts-heading">POSTS</p>
-                </div>
-                <div class="post">
-                    <div class="post-header">
-                        <a href="#profile" class="post-profile">
-                            <img
-                                class="post-user-profilepic m-2"
-                                src="{% static UserProfilePictureurl %}"
-                                alt="profile_pic"
-                                id="profile_pic"
-                            />
-                            <label class="post-username" for="profile_pic"
-                                >This_is_the_username</label
-                            >
-                        </a>
-                        <a class="post-like p-2" href="#liked">
+                {% for post in posts %}
+                    <div class="post">
+                        <div class="post-header">
+                            <a href="#profile" class="post-profile">
+                                <!-- fix this later -->
+                                <!--
+                                required url http://127.0.0.1:8000/static/default.png
+                                current url http://127.0.0.1:8000/static/static/default.png
+                                -->
+                                {% with post.user_profile.picture.url|from_index:7 as source %}
+                                <img
+                                    class="post-user-profilepic m-2"
+                                    src="{% static source %}"
+                                    alt="profile_pic"
+                                    id="profile_pic"
+                                />
+                                {% endwith %}
+                                 <label class="post-username" for="profile_pic">{{post.user_profile.user.username}}</label>
+                            </a>
+                            <!-- <a class="post-like p-2" href="#liked">
                             <i class="material-icons">favorite_border</i>
                         </a>
                         <a class="post-comment p-2" href="#commented">
                             <i class="material-icons">chat_bubble_outline</i>
-                        </a>
+                        </a>-->
+                        </div>
+                        <h1></h1>
+                        <div class="post-body">
+                            <p class="post-body-heading">
+                                {{ post.header }}
+                            </p>
+                            <p class="post-body-text">
+                                {{ post.text }}
+                            </p>
+                            <p class="post-body-link">
+                                <a href="{{post.link}}">{{ post.link }}</a>
+                            </p>
+                            <p class="post-body-date">
+                                {{ post.timestamp }}
+                            </p>
+                        </div>
                     </div>
-                    <div class="post-body">
-                        <p class="post-body-heading">
-                            This is a post made by user 1
-                        </p>
-                        <p class="post-body-text">
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and
-                            scrambled it to make a type specimen book. It has
-                            survived not only five centuries, but also the leap
-                            into electronic typesetting, remaining essentially
-                            unchanged. It was popularised in the 1960s with the
-                            release of Letraset sheets containing Lorem Ipsum
-                            passages, and more recently with desktop publishing
-                            software like Aldus PageMaker including versions of
-                            Lorem Ipsum.
-                        </p>
-                        <p class="post-body-date">
-                            Date Created : 17/2/18
-                        </p>
-                    </div>
-                </div>
-
-                <div class="post">
-                    <div class="post-header">
-                        <a href="#profile" class="post-profile">
-                            <img
-                                class="post-user-profilepic m-2"
-                                src="{{ UserProfile.profile_picture.url }}"
-                                alt="profile_pic"
-                                id="profile_pic"
-                            />
-                            <label class="post-username" for="profile_pic"
-                                >{{ User.username }}
-                            </label>
-                        </a>
-                        <a class="post-like p-2" href="#liked">
-                            <i class="material-icons">favorite_border</i>
-                        </a>
-                        <a class="post-comment p-2" href="#commented">
-                            <i class="material-icons">chat_bubble_outline</i>
-                        </a>
-                    </div>
-                    <div class="post-body">
-                        <p class="post-body-heading">
-                            This is a post made by user 2.9 This post is damn
-                            dumb to be honesht
-                        </p>
-                        <p class="post-body-text">
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and
-                            scrambled it to make a type specimen book. It has
-                            survived not only five centuries, but also the leap
-                            into electronic typesetting, remaining essentially
-                            unchanged.
-                            <br />
-                            It was popularised in the 1960s with the release of
-                            Letraset sheets containing Lorem Ipsum passages, and
-                            more recently with desktop publishing software like
-                            Aldus PageMaker including versions of Lorem Ipsum.
-                            There are many variations of passages of Lorem Ipsum
-                            available, but the majority have suffered alteration
-                            in some form, by injected humour, or randomised
-                            words which don't look even slightly believable. If
-                            you are going to use a passage of
-                            <br />
-                            Lorem Ipsum, you need to be sure there isn't
-                            anything embarrassing hidden in the middle of text.
-                            All the Lorem Ipsum generators on the Internet tend
-                            to repeat predefined chunks as necessary, making
-                            this the first true generator on the Internet. It
-                            uses a dictionary of over 200 Latin words, combined
-                            with a handful of model sentence structures, to
-                            generate Lorem Ipsum which looks reasonable. The
-                            generated Lorem Ipsum is therefore always free from
-                            repetition, injected humour, or non-characteristic
-                            words etc. Lorem Ipsum is simply dummy text of the
-                            printing and typesetting industry. Lorem Ipsum has
-                            been the industry's standard dummy text ever since
-                            the 1500s, when an unknown printer took a galley of
-                            type and scrambled it to make a type specimen book.
-                            It has survived not only five centuries, but also
-                            the leap into electronic typesetting, remaining
-                            essentially unchanged.
-                            <br />
-                            It was popularised in the 1960s with the release of
-                            Letraset sheets containing Lorem Ipsum passages, and
-                            more recently with desktop publishing software like
-                            Aldus PageMaker including versions of Lorem Ipsum.
-                            There are many variations of passages of Lorem Ipsum
-                            available, but the majority have suffered alteration
-                            in some form, by injected humour, or randomised
-                            words which don't look even slightly believable. If
-                            you are going to use a passage of
-                            <br />
-                            Lorem Ipsum, you need to be sure there isn't
-                            anything embarrassing hidden in the middle of text.
-                            All the Lorem Ipsum generators on the Internet tend
-                            to repeat predefined chunks as necessary, making
-                            this the first true generator on the Internet. It
-                            uses a dictionary of over 200 Latin words, combined
-                            with a handful of model sentence structures, to
-                            generate Lorem Ipsum which looks reasonable. The
-                            generated Lorem Ipsum is therefore always free from
-                            repetition, injected humour, or non-characteristic
-                            words etc.
-                        </p>
-                        <p class="post-body-date">
-                            Date Created : 17/2/18
-                        </p>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
 
@@ -520,5 +466,13 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"
         ></script>
+        <script>
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <script>
+        console.log(document.getElementById('profile_pic').src)
+        </script>
     </body>
 </html>

@@ -1,23 +1,38 @@
 from django.shortcuts import render, redirect
 from . import models as u_models
+from posts import models as p_models
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate, login, logout
+import urllib
+# import urllib2
+import json
 
 # Create your views here.
 
 
+def log_login(user):
+    user_profile = u_models.UserProfile.objects.get(user=user)
+    try:
+        log_object = u_models.LoginLog.objects.get(user=user_profile)
+        log_object.save()
+    except:
+        new = u_models.LoginLog(user=user_profile)
+        new.save()
+
+
 def Login(request):
     if request.user.is_authenticated:
+        log_login(request.user)
         return redirect('profile')
     else:
         if request.method == 'POST':
             data = request.POST
             username = data['username']
             password = data['password']
-            print(username, password)
+            #print(username, password)
             user = authenticate(request, username=username, password=password)
-            print(user)
+            # print(user)
             if user is not None:
                 login(request, user)
                 # Redirect to a success page.
@@ -25,9 +40,11 @@ def Login(request):
                 user_id = user.id
                 user_object = User.objects.get(id=user_id)
                 user_profile = u_models.UserProfile.objects.get(user=user)
+                log_login(user)
                 if user_object.is_active == False:
                     user_object.is_active = True
                     user_object.save()
+                    log_login(user)
                     return render(request, 'profile.html', {'data': 'Account has been reactivated'})
                 else:
                     return redirect('profile')
@@ -46,6 +63,17 @@ def Logout(request):
 def Signup(request):
     if request.method == "POST":
         data = request.POST
+        # reCAPTCHA
+        '''    recaptcha_status = data['g-recaptcha-response']
+            url = 'https://www.google.com/recaptcha/api/siteverify'
+            recaptcha_values = {
+                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                'response': recaptcha_response
+            }'''
+        '''data = urllib.urlencode(recaptcha_values)
+        req = urllib2.Request(url, data)
+        response = urllib2.urlopen(req)
+        result = json.load(response)'''
         username = data['username']
         email = data['email']
         password = data['password']
@@ -60,11 +88,7 @@ def Signup(request):
             user.save()
             user_profile = u_models.UserProfile(
                 user=user, birth_date=dob, contact=contact)
-
             user_profile.save()
-            user_profile_picture = u_models.UserProfilePicture(
-                user=user_profile)
-            user_profile_picture.save()
             return redirect('login')
     else:
         return render(request, 'signup.html')
@@ -79,17 +103,30 @@ def Profile(request):
                 return redirect('logout')
         else:
             user = request.user
-            user_profile = u_models.UserProfile(user=user)
-            user_profile_picture = u_models.UserProfilePicture(
-                user=user_profile)
-            user_profile_picture_url = user_profile_picture.image.url
+            user_profile = u_models.UserProfile.objects.get(user=user)
+            user_profile_picture = user_profile.picture
+            user_profile_picture_url = user_profile_picture.url
             user_pp_clean = user_profile_picture_url[7:]
-            print(user_profile_picture.user.user.username,
-                  user_profile_picture.image.url)
             return render(request, 'profile.html', {'User': user, 'UserProfile': user_profile, 'UserProfilePictureurl': user_pp_clean})
     else:
         print("SO SAD")
         return render(request, 'login212.html')
+
+
+def UserProfile(request, username):
+    if request.method == 'POST':
+        pass
+    else:
+        user = User.objects.get(username=username)
+        user_profile = u_models.UserProfile.objects.get(user=user)
+        user_profile_picture = user_profile.picture
+        user_profile_picture_url = user_profile_picture.url
+        user_pp_clean = user_profile_picture_url[7:]
+        user_posts = p_models.Post.objects.all().filter(user_profile=user_profile)
+        user_post = p_models.Post.objects.get(
+            user_profile=user_profile, header='test')
+        print(user_post.user_profile.picture.url, user_pp_clean)
+        return render(request, 'profile.html', {'User': user, 'UserProfile': user_profile, 'UserProfilePictureurl': user_pp_clean, 'posts': user_posts})
 
 
 def Settings(request):
@@ -104,7 +141,8 @@ def Settings(request):
         if 'change_username' in data.keys():
             new_username = data['username']
             try:
-                new_user = u_models.User.objects.get(username=new_username)
+                new_user = u_models.UserProfile.objects.get(
+                    username=new_username)
                 if new_user is not None:
                     return render(request, 'settings.html', {"username_error": "Username already exists."})
             except:
@@ -115,11 +153,8 @@ def Settings(request):
         if 'change_pp' in data.keys():
             print(request.POST)
             new_image = request.FILES.get('image', False)
-            user_profile_picture = u_models.UserProfilePicture.objects.get(
-                user=user_profile)
-            user_profile_picture.image = new_image
-            user_profile_picture.save()
-
+            user_profile.picture = new_image
+            user_profile.save()
             return redirect('settings')
 
         if 'change_password' in data.keys():
@@ -132,11 +167,9 @@ def Settings(request):
                     new_password_hashed = make_password(new_password)
                     user_object.password = new_password_hashed
                     user_object.save()
-<<<<<<< HEAD
                     return redirect('login')
-=======
-                    return render(request, 'settings.html', {'password_error': 'Current password entered is wrong.'})
->>>>>>> c13ec540f0aeaf6cb5aa486749cbc66f7eb2dd5f
+                    # return render(request, 'settings.html', {'password_error': 'Current password entered is wrong.'})
+
                 else:
                     return render(request, 'settings.html', {'password_error': 'Current password entered is wrong.'})
             else:
@@ -154,11 +187,15 @@ def Settings(request):
             if user_object.password == old_passworddelete:
                 user.delete()
     else:
+        user = request.user
         user_profile = u_models.UserProfile(user=user)
-        user_profile_picture = u_models.UserProfilePicture(
-            user=user_profile)
-        user_profile_picture_url = user_profile_picture.image.url
+        user_profile_picture = user_profile.picture
+        user_profile_picture_url = user_profile_picture.url
         user_pp_clean = user_profile_picture_url[7:]
         print(user_profile_picture.user.user.username,
               user_profile_picture.image.url)
         return render(request, 'settings.html', {'User': user, 'UserProfile': user_profile, 'UserProfilePictureurl': user_pp_clean})
+
+    # facepalm0069@gmail.com
+    # pwd=samshnik
+    # https://www.freenom.com/en/freeandpaiddomains.html

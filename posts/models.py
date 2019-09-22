@@ -4,9 +4,8 @@ from users import models as u_models
 
 
 class Post(models.Model):
-    user = models.ForeignKey(u_models.User, on_delete=models.CASCADE)
-    profilepicture = models.ForeignKey(
-        u_models.UserProfilePicture, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(
+        u_models.UserProfile, on_delete=models.CASCADE)
     header = models.CharField(max_length=100)
     text = models.TextField(max_length=1000, blank=False)
     image = models.ImageField(upload_to=None)  # change this shit

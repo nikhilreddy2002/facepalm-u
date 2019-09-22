@@ -119,6 +119,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
-
+#GOOGLE_RECAPTCHA_SECRET_KEY = '6LeFvbkUAAAAADXvX9Jx3gC-MZmiSAnV2FnFb02X'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),
                     ]

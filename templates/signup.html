@@ -42,6 +42,20 @@
                 method="POST"
             >
                 {% csrf_token %}
+                <!--{{ form.as_p }}
+                
+                <script src="https://www.google.com/recaptcha/api.js?render=6LeFvbkUAAAAANtmi0iNbaY5M6aFVaGEIDtScr9P"></script>
+                <script>
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute('6LeFvbkUAAAAANtmi0iNbaY5M6aFVaGEIDtScr9P', {action: 'homepage'}).then(function(token) {
+                        ...
+                        });
+                    });
+                </script>
+                <div
+                    class="g-recaptcha"
+                    data-sitekey="6LeFvbkUAAAAANtmi0iNbaY5M6aFVaGEIDtScr9P"
+                ></div>-->
                 <h1 style="font-size:60px;">Sign-Up</h1>
                 <br />
                 <label for="username">Username:</label>
