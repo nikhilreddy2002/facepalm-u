@@ -40,13 +40,13 @@ class UserProfile(models.Model):
 class Following(models.Model):
     ''' following log table of all users '''
     user_following = models.ForeignKey(
-        UserProfile, on_delete=models.CASCADE, related_name="follower_user")
+        UserProfile, on_delete=models.CASCADE, related_name="follower_user")  # LOGGED IN USER
     user_follower = models.ForeignKey(
-        UserProfile, on_delete=models.CASCADE, related_name="following_user")
+        UserProfile, on_delete=models.CASCADE, related_name="following_user")  # THE USER LOGGED IN USER IS FOLLOWING
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "{follower} is now following {following}".format(follower=self.user_following, following=self.user_follower)
+        return "{follower} is now following {following}".format(follower=self.user_following.user.username, following=self.user_follower.user.username)
 
 
 class LoginLog(models.Model):

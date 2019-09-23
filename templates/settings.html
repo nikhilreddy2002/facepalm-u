@@ -1,5 +1,5 @@
 {% load static from staticfiles %}
-
+{% load from_index %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -204,12 +204,14 @@
                 {% endif %}
             </form>
             <p class="form-header">Change Profile Picture</p>
-            <img
-                src="{% static UserProfilePictureurl %}"
-                alt="profile-picture"
-                class="user-profile-picture"
-                id="username-pp"
-            />
+            {% with UserProfile.picture.url|from_index:7 as source %}
+                <img
+                    class="user-profile-picture m-2"
+                    src="{% static source %}"
+                    alt="profile_pic"
+                    id="profile_pic"
+                />
+            {% endwith %}
             <form
                 action="{% url 'settings' %}"
                 method="POST"

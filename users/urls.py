@@ -12,6 +12,7 @@ urlpatterns = [
     path('logout', views.Logout, name='logout'),
     path('register', views.Signup, name='signup'),
     path('profile/', views.Profile, name='profile'),
-    path('profile/<str:username>/', views.UserProfile),
-    path('settings', views.Settings, name='settings')
+    path('profile/<str:username>/', views.UserProfile, name='userprofile'),
+    path('settings', views.Settings, name='settings'),
+    path('search', views.Search, name='search')
 ] + staticfiles_urlpatterns()

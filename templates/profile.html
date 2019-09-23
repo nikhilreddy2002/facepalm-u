@@ -1,12 +1,11 @@
-{% load static from staticfiles %}
-{% load from_index %}
+{% load static from staticfiles %} {% load from_index %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Home</title>
+        <title>{{ User.username }}</title>
         <link
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -351,8 +350,10 @@
                     <div class="user-profile-header-follow pb-3">
                         <!-- if the user already follows the other user - unfollow btn is shown -->
                         {% if following %}
-                        <form action="#" method="POST">
+                        <form method="POST">
                             {% csrf_token %}
+                            <input type='text' name='username' value={{User.username}} hidden>
+                            <input type='text' name='unfollow' value='' hidden>
                             <a
                                 data-toggle="tooltip"
                                 title="UnPalm Me"
@@ -366,8 +367,10 @@
                             </a>
                         </form>
                         {% else %}
-                        <form action="#" method="POST">
+                        <form method="POST">
                             {% csrf_token %}
+                            <input type='text' name='username' value={{User.username}} hidden>
+                            <input type='text' name='follow' value='' hidden>
                             <a
                                 data-toggle="tooltip"
                                 title="Palm Me"
@@ -402,47 +405,47 @@
             </div>
             <div class="post-wrapper container-fluid">
                 {% for post in posts %}
-                    <div class="post">
-                        <div class="post-header">
-                            <a href="#profile" class="post-profile">
-                                <!-- fix this later -->
-                                <!--
+                <div class="post">
+                    <div class="post-header">
+                        <a href="#profile" class="post-profile">
+                            <!-- fix this later -->
+                            <!--
                                 required url http://127.0.0.1:8000/static/default.png
                                 current url http://127.0.0.1:8000/static/static/default.png
                                 -->
-                                {% with post.user_profile.picture.url|from_index:7 as source %}
-                                <img
-                                    class="post-user-profilepic m-2"
-                                    src="{% static source %}"
-                                    alt="profile_pic"
-                                    id="profile_pic"
-                                />
-                                {% endwith %}
-                                 <label class="post-username" for="profile_pic">{{post.user_profile.user.username}}</label>
-                            </a>
-                            <!-- <a class="post-like p-2" href="#liked">
+                            {% with post.user_profile.picture.url|from_index:7 as source %}
+                            <img
+                                class="post-user-profilepic m-2"
+                                src="{% static source %}"
+                                alt="profile_pic"
+                                id="profile_pic"
+                            />
+                            {% endwith %}
+                            <label class="post-username" for="profile_pic">{{post.user_profile.user.username}}</label>
+                        </a>
+                        <!-- <a class="post-like p-2" href="#liked">
                             <i class="material-icons">favorite_border</i>
                         </a>
                         <a class="post-comment p-2" href="#commented">
                             <i class="material-icons">chat_bubble_outline</i>
                         </a>-->
-                        </div>
-                        <h1></h1>
-                        <div class="post-body">
-                            <p class="post-body-heading">
-                                {{ post.header }}
-                            </p>
-                            <p class="post-body-text">
-                                {{ post.text }}
-                            </p>
-                            <p class="post-body-link">
-                                <a href="{{post.link}}">{{ post.link }}</a>
-                            </p>
-                            <p class="post-body-date">
-                                {{ post.timestamp }}
-                            </p>
-                        </div>
                     </div>
+                    <h1></h1>
+                    <div class="post-body">
+                        <p class="post-body-heading">
+                            {{ post.header }}
+                        </p>
+                        <p class="post-body-text">
+                            {{ post.text }}
+                        </p>
+                        <p class="post-body-link">
+                            <a href="{{ post.link }}">{{ post.link }}</a>
+                        </p>
+                        <p class="post-body-date">
+                            {{ post.timestamp }}
+                        </p>
+                    </div>
+                </div>
                 {% endfor %}
             </div>
         </div>
@@ -472,7 +475,7 @@
             });
         </script>
         <script>
-        console.log(document.getElementById('profile_pic').src)
+            console.log(document.getElementById("profile_pic").src);
         </script>
     </body>
 </html>

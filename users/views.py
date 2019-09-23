@@ -30,7 +30,7 @@ def Login(request):
             data = request.POST
             username = data['username']
             password = data['password']
-            #print(username, password)
+            # print(username, password)
             user = authenticate(request, username=username, password=password)
             # print(user)
             if user is not None:
@@ -101,6 +101,8 @@ def Profile(request):
                 return redirect('login')
             elif 'logout' in request.POST.keys():
                 return redirect('logout')
+            elif 'follow' or 'unfollow' in request.POST.keys():
+                return redirect('profile')
         else:
             user = request.user
             user_profile = u_models.UserProfile.objects.get(user=user)
@@ -115,18 +117,57 @@ def Profile(request):
 
 def UserProfile(request, username):
     if request.method == 'POST':
-        pass
+        data = request.POST
+        username = data['username']
+        current_user = request.user
+        logged_in_user = u_models.UserProfile.objects.get(user=current_user)
+        user = User.objects.get(username=username)
+        followed_account = u_models.UserProfile.objects.get(user=user)
+        print(logged_in_user.user.username,
+              followed_account.user.username, current_user.username)
+        '''
+        - get the User model object using the username from the html
+        - get the UserProfile object using the User object
+        - create the new Following object
+        - save it
+        '''
+        if username != current_user.username:
+            if "follow" in data.keys():
+                '''
+                user_following is the logged in user
+                user_follower is the followed account
+                '''
+
+                try:
+                    person = u_models.Following.objects.get(
+                        user_following=logged_in_user, user_follower=followed_account)
+                except:
+                    add_follower = u_models.Following(
+                        user_following=logged_in_user, user_follower=followed_account)
+                    add_follower.save()
+                    return redirect('userprofile', username=username)
+            elif "unfollow" in data.keys():
+                u_models.Following.objects.filter(
+                    user_following=logged_in_user, user_follower=followed_account
+                ).delete()
+                return redirect('userprofile', username=username)
+        else:
+            redirect('profile')
     else:
+        current_user = request.user
+        logged_in_user = u_models.UserProfile.objects.get(user=current_user)
         user = User.objects.get(username=username)
         user_profile = u_models.UserProfile.objects.get(user=user)
         user_profile_picture = user_profile.picture
         user_profile_picture_url = user_profile_picture.url
         user_pp_clean = user_profile_picture_url[7:]
         user_posts = p_models.Post.objects.all().filter(user_profile=user_profile)
-        user_post = p_models.Post.objects.get(
-            user_profile=user_profile, header='test')
-        print(user_post.user_profile.picture.url, user_pp_clean)
-        return render(request, 'profile.html', {'User': user, 'UserProfile': user_profile, 'UserProfilePictureurl': user_pp_clean, 'posts': user_posts})
+        following = u_models.Following.objects.all().filter(
+            user_following=logged_in_user, user_follower=user_profile)
+        if following is None:
+            return render(request, 'profile.html', {'User': user, 'UserProfile': user_profile, 'UserProfilePictureurl': user_pp_clean, 'posts': user_posts, 'following': ''})
+        # print(user_post.user_profile.picture.url, user_pp_clean)
+        return render(request, 'profile.html', {'User': user, 'UserProfile': user_profile, 'UserProfilePictureurl': user_pp_clean, 'posts': user_posts, 'following': following})
 
 
 def Settings(request):
@@ -186,15 +227,36 @@ def Settings(request):
             old_passworddelete = data['delete_password']
             if user_object.password == old_passworddelete:
                 user.delete()
+
     else:
         user = request.user
-        user_profile = u_models.UserProfile(user=user)
+        user_profile = u_models.UserProfile.objects.get(user=user)
         user_profile_picture = user_profile.picture
         user_profile_picture_url = user_profile_picture.url
         user_pp_clean = user_profile_picture_url[7:]
-        print(user_profile_picture.user.user.username,
-              user_profile_picture.image.url)
+        # print(user_profile_picture.user.user.username,user_profile_picture.image.url)
         return render(request, 'settings.html', {'User': user, 'UserProfile': user_profile, 'UserProfilePictureurl': user_pp_clean})
+
+
+def Search(request):
+    if request.method == 'POST':
+        data = request.POST
+        search_username = data['search']
+        get_all_usernames = 'select * from auth_user where username like "% {}"'.format(
+            search_username)
+        all_usernames = u_models.UserProfile.objects.raw(get_all_usernames)
+        for search_results in all_usernames:
+            print(search_results)
+
+        '''
+        userprofile --> user (Django User Model fkey)
+        user
+        select * from auth_user where username like '%{}'.format(search_username)
+        
+    
+        '''
+    else:
+        return render(request, 'search.html')
 
     # facepalm0069@gmail.com
     # pwd=samshnik

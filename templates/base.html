@@ -19,6 +19,12 @@
             href="https://fonts.googleapis.com/css?family=ZCOOL+KuaiLe&display=swap"
             rel="stylesheet"
         />
+        <link 
+            href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" 
+            rel="stylesheet" 
+            integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" 
+            pcrossorigin="anonymous"
+        />
     </head>
 
     <style>
@@ -197,27 +203,27 @@
             <div class="collapse navbar-collapse" id="navbarsExample05">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="home.html"
+                        <a class="nav-link" href="{% url 'home' %}"
                             ><i class="material-icons">favorite</i>Feed
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="search.html"
+                        <a class="nav-link" href="{% url 'search' %}"
                             ><i class="material-icons">whatshot</i>Search</a
                         >
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.html"
+                        <a class="nav-link" href="{% url 'profile' %}"
                             ><i class="material-icons">face</i>Profile</a
                         >
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="post.html"
+                        <a class="nav-link" href="{% url 'post' %}"
                             ><i class="material-icons">add_circle</i>Post</a
                         >
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#settings"
+                        <a class="nav-link" href="{% url 'settings' %}"
                             ><i class="material-icons">settings</i>Settings</a
                         >
                     </li>
@@ -229,6 +235,7 @@
         </nav>
 
         {% block content %}
+
         {% endblock content %}
 
         <footer class="footer">
